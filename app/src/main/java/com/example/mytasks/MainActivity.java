@@ -25,9 +25,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         ArrayList<String> taskList = new ArrayList<>();
-        tasksAdapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_list_item_1, taskList);
+        tasksAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, taskList);
         ListView listView = (ListView) findViewById(R.id.tasksListView);
         listView.setAdapter(tasksAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -43,19 +43,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    protected void refreshTasks(){
-        db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM TASKS", null);
-        cursor.moveToFirst();
-        while(!cursor.isAfterLast()){
-            String nome = cursor.getString(1);
-            tasksAdapter.add(nome);
-            cursor.moveToNext();
-        }
-        cursor.close();
-        db.close();
-        dbHelper.close();
-    }
+
     public void addTask(View view){
         try{
             EditText edit = (EditText)findViewById(R.id.newTaskEditText);
@@ -86,5 +74,19 @@ public class MainActivity extends AppCompatActivity {
                     .setPositiveButton("Ok", null)
                     .show();
         }
+    }
+
+    protected void refreshTasks(){
+        db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM TASKS", null);
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()){
+            String nome = cursor.getString(1);
+            tasksAdapter.add(nome);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        db.close();
+        dbHelper.close();
     }
 }
